@@ -25,6 +25,17 @@ def get_db_data(region=None):
     conn.close()
     return df
 
+# 部署到 Streamlit 時，如果資料庫不存在，嘗試使用 Secrets 裡的 API Token 自動抓取
+db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.db')
+if not os.path.exists(db_path):
+    try:
+        from data_fetcher import fetch_and_save
+        if "CWA_API_TOKEN" in st.secrets:
+            with st.spinner("☁️ 首次啟動，正在向中央氣象署抓取最新資料..."):
+                fetch_and_save(st.secrets["CWA_API_TOKEN"])
+    except Exception as e:
+        pass
+
 all_data = get_db_data()
 
 if not all_data.empty:
