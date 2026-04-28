@@ -34,7 +34,8 @@ if not os.path.exists(db_path):
             with st.spinner("☁️ 首次啟動，正在向中央氣象署抓取最新資料..."):
                 fetch_and_save(st.secrets["CWA_API_TOKEN"])
     except Exception as e:
-        pass
+        st.error(f"自動抓取資料失敗: {e}")
+        st.info("請確認是否已在 Advanced settings -> Secrets 中設定 CWA_API_TOKEN。")
 
 all_data = get_db_data()
 

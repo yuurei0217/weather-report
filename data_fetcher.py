@@ -10,7 +10,8 @@ import pandas as pd
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def setup_db():
-    conn = sqlite3.connect('data.db')
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data.db')
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     # HW2-3: 創建資料庫 Table
     cursor.execute('''
